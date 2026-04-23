@@ -405,7 +405,7 @@ alt.data_transformers.disable_max_rows()
 cfg = get_config()
 instructor_password = get_instructor_password()
 
-st.title("🏁 Live Classroom Regression Leaderboard")
+st.title("🏁 INF01090 - Lab 05 - Live Regression Leaderboard")
 st.write(f"**Competition:** {cfg['competition_name']}")
 st.write(f"**Primary leaderboard metric:** `{cfg['metric']}`")
 
