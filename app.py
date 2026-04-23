@@ -191,8 +191,18 @@ with right:
         st.dataframe(leaderboard, use_container_width=True, hide_index=True)
 
 st.divider()
-with st.expander("Instructor tools"):
-    if st.button("Reset leaderboard"):
-        empty = pd.DataFrame(columns=["rank", "team", "score", "metric", "submitted_at", "file", "note"])
-        save_leaderboard(empty)
-        st.success("Leaderboard reset.")
+with st.expander("🔒 Instructor tools"):
+
+    password_input = st.text_input("Instructor password", type="password")
+
+    if password_input == st.secrets["instructor"]["password"]:
+
+        st.success("Access granted")
+
+        if st.button("🧹 Reset leaderboard"):
+            empty = pd.DataFrame(columns=["rank", "team", "score", "metric", "submitted_at", "file", "note"])
+            save_leaderboard(empty)
+            st.success("Leaderboard reset.")
+
+    elif password_input:
+        st.error("Incorrect password")
