@@ -486,6 +486,7 @@ with st.expander("🔒 Instructor tools"):
         st.warning("No instructor password configured in secrets.")
     else:
         password_input = st.text_input("Instructor password", type="password", key="instr_pwd")
+
         if password_input == instructor_password:
             st.success("Access granted")
 
@@ -497,7 +498,14 @@ with st.expander("🔒 Instructor tools"):
                         columns=["rank", "team", "score", "metric", "submitted_at", "file", "note"]
                     )
                     save_leaderboard(empty_leaderboard)
+
+                    # 🔥 clear UI state
+                    for key in ["evolution_teams", "evolution_metric"]:
+                        if key in st.session_state:
+                            del st.session_state[key]
+
                     st.success("Leaderboard reset.")
+                    st.rerun()
 
             with col2:
                 if st.button("🗑 Reset history"):
@@ -505,6 +513,14 @@ with st.expander("🔒 Instructor tools"):
                         columns=["team", "rmse_log", "rmse", "mae", "submitted_at", "file", "note"]
                     )
                     save_history(empty_history)
+
+                    # 🔥 clear UI state
+                    for key in ["evolution_teams", "evolution_metric"]:
+                        if key in st.session_state:
+                            del st.session_state[key]
+
                     st.success("History reset.")
+                    st.rerun()
+
         elif password_input:
             st.error("Incorrect password")
