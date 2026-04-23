@@ -6,6 +6,9 @@ import pandas as pd
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 
+#st.write(st.secrets["connections"]["gsheets"]["client_email"])
+#st.write(st.secrets["connections"]["gsheets"]["spreadsheet"])
+#st.write(st.secrets["connections"]["gsheets"]["type"])
 
 def rmse(y_true, y_pred):
     y_true = np.asarray(y_true, dtype=float)
@@ -145,7 +148,7 @@ def score_submission_df(df_sub, team, file_name, note=""):
 st.set_page_config(page_title="Live Classroom Leaderboard", page_icon="🏁", layout="wide")
 cfg = get_config()
 
-st.title("🏁 Live Classroom Regression Leaderboard")
+st.title("🏁 INF01090 - Lab 05 - Live Regression Leaderboard")
 st.write(f"**Competition:** {cfg['competition_name']}")
 st.write(f"**Metric:** `{cfg['metric']}`")
 
