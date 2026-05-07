@@ -310,7 +310,25 @@ def show_score_evolution(history):
     history = history.copy()
     history["submitted_at"] = pd.to_datetime(history["submitted_at"], errors="coerce")
 
-    teams = sorted(history["team"].dropna().unique().tolist())
+    # Cast to str first so NaN floats (from empty sheet rows) become "nan",
+    # then filter them out before sorting.
+    history["team"] = history["team"].astype(str)
+    history = history[history["team"].str.strip().str.lower() != "nan"]
+
+    if history.empty:
+        st.info("No submission history yet.")
+        return
+
+    #teams = sorted(history["team"].unique().tolist())
+
+    # After (robust)
+    history["team"] = history["team"].astype(str)          # NaN float → "nan" string
+    history = history[history["team"].str.strip().str.lower() != "nan"]  # drop ghost rows
+    if history.empty:
+        st.info("No submission history yet.")
+        return
+    teams = sorted(history["team"].unique().tolist())       # safe: all real strings
+    
     default_teams = teams[:3] if len(teams) >= 3 else teams
 
     selected_teams = st.multiselect(
@@ -361,6 +379,14 @@ def show_metric_breakdown(history):
 
     history = history.copy()
     history["submitted_at"] = pd.to_datetime(history["submitted_at"], errors="coerce")
+
+    # Same ghost-row guard as show_score_evolution
+    history["team"] = history["team"].astype(str)
+    history = history[history["team"].str.strip().str.lower() != "nan"]
+
+    if history.empty:
+        st.info("No submission history yet.")
+        return
 
     latest_only = st.checkbox("Show only latest submission per team", value=True)
 
